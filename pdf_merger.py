@@ -1,12 +1,37 @@
 import os
 import sys
+from getopt import getopt
 
 from pikepdf import Pdf
 
 
 def merger():
+    directory = None
+    new_name = None
 
     valid_directory = False
+
+    argv = sys.argv[1:]
+    try:
+        opts, args = getopt(argv, "p:n:", ["path = ", "name ="])
+    
+    except:
+        print("Unexpected error:", sys.exc_info()[0])
+        raise
+
+    for opt, arg in opts:
+        if opt in ['-p']:
+            # print(arg)
+            if arg == "cwd":
+                directory = os.getcwd()
+                valid_directory = True
+            elif os.path.isdir(arg):
+                directory = arg
+                valid_directory = True
+            else:
+                print("Invalid input. Directory not found.")
+        if opt in ['-n']:
+            new_name = arg
 
     while not valid_directory:
         directory = input("Path to directory with the PDFs to be merged "
@@ -43,7 +68,15 @@ def merger():
         print("Only", len_pdf_list,
               ".pdf files in this directory. Not merging")
     else:
-        new_name = input("Name for the merged PDF: ")
+        if new_name == None:
+            new_name = input("Name for the merged PDF: ")
+        while (new_name + ".pdf") in pdf_list:
+            option = input("PDF with this name already exists. 'f' to overwrite or new name: ")
+            if option != 'f': 
+                new_name = option
+            else:
+                break
+            
         print("Merging", len_pdf_list,
               "files into a file called " + new_name + ".pdf")
 
