@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+while getopts p:n: flag
+do
+    case "${flag}" in
+        p) path=${OPTARG};;
+        n) name=${OPTARG};;
+    esac
+done
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+if [[ $(pip list) != *"pikepdf"* ]]; then
+    pip install pikepdf==2.16.1
+fi
+
+python $SCRIPT_DIR/pdf_merger.py -p $path -n $name

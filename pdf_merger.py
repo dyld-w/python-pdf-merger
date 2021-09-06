@@ -43,7 +43,7 @@ def merger():
         elif os.path.isdir(directory):
             valid_directory = True
         else:
-            print("Invalid input. Directory not found.")
+            print("Directory not found.")
 
     print("Directory found:", directory)
 
