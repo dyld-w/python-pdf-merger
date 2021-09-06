@@ -2,3 +2,4 @@ venv
 exe
 .vscode
 __pycache__
+upx
